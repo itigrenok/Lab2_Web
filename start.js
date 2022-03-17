@@ -5,7 +5,7 @@ const urlencodedParser = express.urlencoded({extended: false});
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 
-const secret = "secret"
+const code = "secret"
 const user = {
     login: "yulia",
     password: "4c0860f68178047c8bc26678dc37953bd57220f4",
@@ -19,7 +19,7 @@ const authorization = (req, res, next) => {
     }
 
     try {
-        const data = jwt.verify(req.cookies.access_token, secret)
+        const data = jwt.verify(req.cookies.access_token, code)
         req.userId = data.id
         req.userRole = data.role
         return next()
@@ -43,7 +43,7 @@ app.post("/v1/authorization", urlencodedParser, function (req, res) {
         }
 
         return res
-            .cookie("access_token", jwt.sign(user.info, secret), {
+            .cookie("access_token", jwt.sign(user.info, code), {
                 httpOnly: true
             })
             .status(200)
